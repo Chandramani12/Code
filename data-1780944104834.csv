@@ -1,0 +1,6 @@
+"ticket_id","ticket_number","status_name","location_id","ticket_location","assigned_team_id","routed_team","routed_team_location"
+132,"TKC20260608235109","Pending Approval",3,"Mumbai Airoli",1,"Admin",2
+122,"TKC20260605171832","In Progress",3,"Mumbai Airoli",20,"DBA",2
+121,"TKC20260605130058","Open",3,"Mumbai Airoli",11,"SSG (Software Solutions Group)",2
+120,"TKC20260605104436","Open",3,"Mumbai Airoli",11,"SSG (Software Solutions Group)",2
+119,"TKC20260605104054","Open",3,"Mumbai Airoli",11,"SSG (Software Solutions Group)",2
