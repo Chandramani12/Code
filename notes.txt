@@ -1,0 +1,597 @@
+first implementation
+1) when to ticket assign ,should be able to reassign by manager
+
+2) self assign ticket options(for employee only )
+
+3) when ticket is not closed in spefic date range, show be go email alret notification to go manager,
+employee,admin
+
+4) Alert Message should professional level pop window
+
+5) ATTACHMENTS (Optional) need to remove this currently now.
+
+
+
+
+
+Second implementations
+
+
+3) DRop Down (Should show yearly,half yealry,current month,last moenth)
+
+4) Logs
+
+4) t_user table should be created_at and updated_at column with date and time. To manage all activity (users,manager,
+employee,admin)
+
+5)should be user to give rating for ticket, share expreiance, only can see manager & admin
+
+6)need to add column updated_at for tracking when to team edit and updated.
+
+7) Approvers(should be show on the same window , do not  add new url for this)
+
+
+
+
+===================================================================================================================================
+Problem
+
+
+# Ticket Routing, Access Control & Validation Issues – Complete Requirement Document
+
+---
+
+# 1. IT Help Desk Ticket Routing
+
+	
+
+* User location
+* Organization
+* Team mapping configuration
+
+### Expected Behavior
+
+* Tickets should only be routed to the matching IT Service team.
+* Tickets should not be assigned to other locations or unrelated teams.
+* Routing should follow organization-wise and location-wise mapping.
+
+---
+
+# 2. DBA Ticket Routing
+
+When a user creates a ticket related to DBA support, the ticket should be automatically routed only to the DBA team according to:
+
+* User location
+* Organization hierarchy
+* Team mapping rules
+
+### Expected Behavior
+
+* DBA tickets should only be visible to DBA teams.
+* Tickets should not appear for unrelated departments or managers.
+* System should validate organization and location before assignment.
+
+---
+
+# 3. Manager Role Access Restriction
+
+When an admin assigns a manager role for the DBA team, that manager should only have access to DBA-related data based on the assigned location and organization.
+
+## DBA Manager Access Should Include
+
+* DBA tickets for the assigned location only
+* DBA employees for the assigned location only
+* DBA dashboard and modules related to the assigned location and organization
+
+## Expected Behavior
+
+* DBA managers should not be able to view:
+
+  * Other team tickets
+  * Other location tickets
+  * Other organization data
+
+### Access Should Be Restricted Based On
+
+* Team
+* Location
+* Organization
+* Role permissions
+
+### Current Issue
+
+Currently, DBA managers are unable to correctly view or access DBA team data location-wise according to their assigned permissions.
+
+---
+
+# 4. Team Mapping Error During Ticket Creation
+
+Sometimes, while creating a DBA-related ticket, users receive the following error:
+
+```txt id="7o1xq2"
+No team is set up at your location to handle this category.
+Ask an admin to create the matching team at your location, or choose a different category.
+```
+
+## Current Issue
+
+```txt id="x2gsr9"
+POST http://localhost:3008/api/tickets-generate
+500 Internal Server Error
+```
+
+The system is throwing an Internal Server Error instead of handling the validation properly.
+
+## Expected Behavior
+
+The system should:
+
+* Validate category, organization, and location mapping before ticket creation
+* Show a professional validation popup if no matching team exists
+* Prevent backend crashes and avoid 500 errors
+
+---
+
+# 5. Professional Validation & Error Messages
+
+If users:
+
+* Enter incorrect values
+* Select invalid options
+* Submit incomplete forms
+* Choose unmapped categories
+
+the system should display professional popup validation messages.
+
+## Recommended UI
+
+* Toast notifications
+* Modal alerts
+* Validation popups
+* Inline form validation messages
+
+## Example Messages
+
+* Invalid category selected
+* Team mapping not found
+* Required fields missing
+* Unauthorized access
+* Invalid organization/location mapping
+
+Browser default alerts should not be used.
+
+---
+
+# 6. DBA Manager Ticket Visibility Issue
+
+Currently, when a DBA manager logs into the system, DBA tickets are not visible correctly in the manager dashboard.
+
+## Expected Behavior
+
+DBA managers should only see:
+
+* DBA tickets
+* DBA employees
+* DBA approvals
+* DBA activity logs
+* Tickets related to their assigned location and organization
+
+## Current Issue
+
+The filtering and visibility logic is not working correctly for DBA managers.
+
+---
+
+# 7. Incorrect Ticket Visibility for IT Services Manager
+
+Currently, IT Services managers are able to view both:
+
+* IT Help Desk tickets
+* DBA tickets
+
+## Expected Behavior
+
+IT Services managers should only have access to:
+
+* IT Help Desk tickets
+* IT Services employees
+* IT Services dashboards/modules
+* Tickets belonging to their assigned location and organization
+
+DBA tickets should not be visible unless explicitly authorized.
+
+---
+
+# 8. Recommended Role-Based Access Control (RBAC)
+
+Implement strict role-based and team-based access control.
+
+## Access Levels
+
+### Admin
+
+* Full system access
+* All organizations
+* All locations
+* All teams
+
+### DBA Manager
+
+* Only DBA team access
+* Assigned organization only
+* Assigned location only
+
+### IT Services Manager
+
+* Only IT Services access
+* Assigned organization only
+* Assigned location only
+
+### Employee/User
+
+* Self-created tickets only
+* Assigned tickets only
+
+---
+
+# 9. Recommended Team Mapping Validation Logic
+
+Before ticket creation, the system should validate:
+
+* Organization ID
+* Location ID
+* Team ID
+* Category ID
+* Role mapping
+
+## If Mapping Exists
+
+* Create ticket successfully
+* Auto-assign to correct team
+
+## If Mapping Does Not Exist
+
+* Stop ticket creation
+* Show professional popup message
+* Log the issue in activity logs
+* Avoid backend/server crashes
+
+---
+
+# 10. Recommended Backend Improvements
+
+## Validation Handling
+
+Add proper validation before database insertion.
+
+## Error Handling
+
+Use centralized try/catch error handling.
+
+## Logging
+
+Maintain:
+
+* Ticket logs
+* Assignment logs
+* Access logs
+* Validation failure logs
+
+==============================================================================
+
+
+# Ticket Management System – Complete Enhancement & Improvement Requirements
+
+## First Phase Implementations
+
+---
+
+# 1. Ticket Reassignment by Manager
+
+Managers should have permission to reassign tickets to another employee or team after the initial assignment.
+
+### Features
+
+* Reassign ticket option for managers/admins
+* Track reassignment history
+* Notify newly assigned employee
+* Maintain previous assignment logs
+
+---
+
+# 2. Self-Assign Ticket Option
+
+Employees should be able to self-assign available or unassigned tickets.
+
+### Features
+
+* “Self Assign” button for employees
+* Only visible for unassigned tickets
+* Auto-update assignment logs
+* Email/notification after self-assignment
+
+---
+
+# 3. SLA Escalation & Email Notifications
+
+If a ticket is not closed within the defined SLA or expected date range, automatic escalation notifications should be triggered.
+
+### Email Alerts Should Be Sent To
+
+* Assigned Employee
+* Manager
+* Admin
+
+### Escalation Conditions
+
+* Ticket overdue
+* SLA breached
+* No response within expected time
+* Pending approval delay
+
+### Notification Types
+
+* Email alerts
+* In-app notifications
+* Dashboard warning indicators
+
+---
+
+# 4. Professional Alert Messages
+
+All alerts, warnings, confirmations, and notifications should use modern professional UI components instead of browser alerts.
+
+### Recommended UI
+
+* Toast notifications
+* Confirmation modal popups
+* Warning dialogs
+* Success/error messages
+
+### Examples
+
+* Ticket Assigned Successfully
+* Ticket Closed Successfully
+* Are you sure you want to delete?
+* SLA Breach Warning
+
+---
+
+# 5. Remove Attachment Field
+
+The optional “Attachments” section should be removed from the current ticket creation form.
+
+---
+
+# 6. Inline Approver Section
+
+The approver section should open within the same page instead of redirecting to a separate URL.
+
+### Recommended UI Options
+
+* Modal Popup
+* Side Drawer
+* Expandable Accordion
+* Inline Panel
+
+### Features
+
+* Show approver name
+* Approval status
+* Approval comments
+* Approved date/time
+* Pending approvals
+* Multi-level approval workflow
+
+### Expected Behavior
+
+* Open instantly within same page
+* No page refresh/redirection
+* Faster and cleaner workflow
+
+---
+
+# Second Phase Implementations
+
+---
+
+
+
+---
+
+# 2. Advanced Date Filter Dropdown
+
+Add predefined date filter options across reports and ticket listings.
+
+### Date Filter Options
+
+* Today
+* Yesterday
+* Current Week
+* Last Week
+* Current Month
+* Last Month
+* Half Yearly
+* Yearly
+* Custom Date Range
+* All Time
+
+### Expected Functionality
+
+* Dynamic filtering without page reload
+* Custom range calendar picker
+* Fast reporting access
+
+---
+
+# 3. Complete Activity Logs / Audit Trail System
+
+Implement centralized activity logs for tracking all important system activities.
+
+---
+
+## User Activity Logs
+
+### Login & Session Tracking
+
+* User login
+* User logout
+* Failed login attempts
+* Session timeout
+* IP/device tracking (optional)
+
+### Role & Permission Logs
+
+* Role changed from User → Employee
+* Employee → Manager
+* Manager → Admin
+* Permission granted/revoked
+* Department/team transfer
+
+### User Profile Logs
+
+* User created
+* User updated
+* User activated/deactivated
+* Password reset
+
+---
+
+## Ticket Activity Logs
+
+### Ticket Lifecycle Tracking
+
+* Ticket created
+* Ticket updated
+* Ticket assigned
+* Ticket reassigned
+* Ticket self-assigned
+* Ticket approved/rejected
+* Status changed
+* Priority changed
+* Ticket closed/reopened
+
+### Communication Logs
+
+* Comment added
+* Internal note added
+* Email notification sent
+* Reminder notification sent
+
+### SLA & Escalation Logs
+
+* SLA breached
+* Escalation mail triggered
+* Pending ticket alerts
+
+---
+
+## System Activity Logs
+
+### Administrative Logs
+
+* Team created/updated
+* Department changes
+* Settings changes
+* Workflow updates
+
+### Security Logs
+
+* Unauthorized access attempts
+* Invalid token/session
+* API failure logs
+
+---
+
+# 4. Audit Columns in Database Tables
+
+Add audit tracking columns in important tables.
+
+### Required Columns
+
+* `created_at`
+* `updated_at`
+
+### Optional Columns
+
+* `deleted_at`
+* `created_by`
+* `updated_by`
+
+### Tables
+
+* `t_users`
+* `t_tickets`
+* `t_teams`
+* `t_approvals`
+* `activity_logs`
+
+---
+
+# 5. Ticket Rating & Feedback System
+
+After ticket closure, users should be able to provide ratings and feedback.
+
+### Features
+
+* Star rating system
+* Experience comments
+* Service feedback
+
+### Visibility
+
+Only visible to:
+
+* Admin
+* Managers
+
+---
+
+# 6. Team Update Tracking
+
+Add `updated_at` tracking for all team updates and modifications.
+
+### Track Changes Like
+
+* Team name update
+* Team manager change
+* Department reassignment
+
+---
+
+
+
+
+# 9. User Presence Tracking
+
+Track active user sessions and availability.
+
+### Features
+
+* Last login time
+* Online/offline status
+* Active session tracking
+
+---
+
+
+# Suggested Database Table for Logs
+
+## `activity_logs`
+
+### Recommended Columns
+
+* `id`
+* `user_id`
+* `user_name`
+* `role_name`
+* `activity_type`
+* `module_name`
+* `description`
+* `old_value`
+* `new_value`
+* `ip_address`
+* `created_at`
+
+---
+
