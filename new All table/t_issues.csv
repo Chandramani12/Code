@@ -1,0 +1,51 @@
+"issue_id","issue_name","type_id","mapped_team_id"
+1,"Access Rights",1,1
+2,"Hardware Issue",1,2
+3,"Software Issue",2,2
+6,"Email Issue",1,2
+7,"PRI Issue",1,2
+8,"Network Issue",1,2
+9,"Other Issue",3,3
+11,"Internet Issue",1,2
+12,"Account Lock / Password Reset",1,1
+13,"Headset Issue",1,2
+14,"System Issue",2,2
+15,"Domain ID Creation",1,2
+16,"Domain ID Deactivation",1,2
+17,"Shared Drive Access",1,2
+18,"VPN Issue",2,2
+19,"Salesforce Issue",2,2
+20,"System Movement",2,2
+21,"Outlook Issue",2,2
+22,"Projector Setup",1,2
+23,"Mouse Issue",1,2
+24,"Keyboard Issue",1,2
+25,"Monitor Issue",1,2
+26,"Terminal ID Issue",2,2
+27,"Change Request",3,2
+28,"New System Setup",1,2
+29,"Interdilog Setup",2,2
+30,"CRM Issue",2,2
+31,"Dialer Issue",2,2
+32,"Headset Issue",1,3
+33,"System Issue",2,3
+34,"Domain ID Creation",1,3
+35,"Domain ID Deactivation",1,3
+36,"Shared Drive Access",1,3
+37,"VPN Issue",2,3
+38,"Salesforce Issue",2,3
+39,"System Movement",2,3
+40,"Outlook Issue",2,3
+41,"Projector Setup",1,3
+42,"Mouse Issue",1,3
+43,"Keyboard Issue",1,3
+44,"Monitor Issue",1,3
+45,"Terminal ID Issue",2,3
+46,"Change Request",3,3
+47,"New System Setup",1,3
+48,"Interdilog Setup",2,3
+49,"CRM Issue",2,3
+50,"Dialer Issue",2,3
+4,"Database Issue",2,20
+5,"Backup Issue",2,20
+10,"SFTP Issue",2,20
